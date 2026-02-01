@@ -390,6 +390,8 @@ bool tr_chassis::perform_dsr_quad(tr_quadrant quadrant, bool trust_sensors)
 void tr_chassis::perform_dsr_init(tr_quadrant quadrant, float heading)
 {
     lemlib::Pose pose = chassis->getPose();
+    imu->set_heading(heading);
+    chassis->setPose(lemlib::Pose(0,0,heading));
     tr_conf_pair<tr_vector3> coords = get_position_calculation(quadrant, heading);
 
     pose.x = coords.get_value().x;

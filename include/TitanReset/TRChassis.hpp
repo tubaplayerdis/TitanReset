@@ -42,6 +42,8 @@ public:
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot does not know which quadrant it is in.
+     * 
+     * @note Use this function after a movement that performs an action such as driving over a parking zone which crosses quadrants.
      *
      * @param quad The quadrant the robot is currently in
      * @return Whether the function decided to reset the location of the robot
@@ -50,6 +52,9 @@ public:
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot does not know where it is and the sensors are fully trusted.
+     * 
+     * @note This will set the heading of the chassis and imu as it performs a distance sensor reset. 
+     * @warning This will always set the location of the robot. Use only in a situation where the robot starts in familliar place each time like the start of an auton.
      *
      * @param quadrant The quadrant the robot is currently in
      * @param heading The heading of the robot
