@@ -1,7 +1,7 @@
 #include <math.h>
 
-/*
- * Quadrant enumeration.
+/**
+ * TitanReset Quadrant enumeration.
  */
 enum tr_quadrant
 {
@@ -11,6 +11,9 @@ enum tr_quadrant
     POS_NEG,
 };
 
+/**
+ * TitanReset Sensor flags.
+ */
 enum tr_sensors
 {
     NORTH = 1,
@@ -134,8 +137,22 @@ struct tr_vector3
         y = Y;
         z = Z;
     }
+
+    /**
+     * @brief Standard constructor for vector, initializes values to input parameters
+     * @param arr
+     */
+    tr_vector3(std::array<float, 3> arr)
+    {
+        x = arr[0];
+        y = arr[1];
+        z = arr[2];
+    }
 };
 
+/**
+ * Two dimensional vector object used by TitanReset
+ */
 struct tr_vector2
 {
     float x;
@@ -152,8 +169,21 @@ struct tr_vector2
         x = X;
         y = Y;
     }
+
+    /**
+     * @brief Standard constructor for vector, initializes values to input parameters
+     * @param arr
+     */
+    tr_vector2(std::array<float, 2> arr)
+    {
+        x = arr[0];
+        y = arr[1];
+    }
 };
 
+/**
+ * Rctangle object used by TitanReset to determine if a reset is reads a valid location on the field.
+ */
 struct tr_rectangle
 {
     tr_vector2 lower_bound;
@@ -173,6 +203,9 @@ struct tr_rectangle
     }
 };
 
+/**
+ * Circle object used by TitanReset to determine if a reset is reads a valid location on the field.
+ */
 struct tr_circle
 {
     tr_vector2 center;

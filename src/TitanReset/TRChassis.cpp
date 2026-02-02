@@ -363,7 +363,7 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
     return ret;
 }
 
-float tr_chassis::conf_avg(tr_conf_pair<float> one, tr_conf_pair<float> two)
+float tr_chassis::conf_avg(tr_distance one, tr_distance two)
 {
     return (one.get_confidence() + two.get_confidence()) / 2.0f;
 }

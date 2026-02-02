@@ -3,7 +3,9 @@
 #include "../lemlib/chassis/chassis.hpp"
 
 /**
- * Options used by TitanReset when initializing the TitanReset chassis. Subject to change as more modifiable options are added.
+ * Options used by TitanReset when initializing the TitanReset chassis.
+ * 
+ * @note Subject to change as more modifiable options are added.
  */
 struct tr_options
 {
@@ -13,16 +15,15 @@ struct tr_options
     const float sensor_trust = 0.5;
 };
 
-
 /**
- * TitanReset chassis object
+ * TitanReset chassis object. Used to perform distance sensor resets
  */
 class tr_chassis
 {
 public:
 
     /**
-     * @breif Initialize the localization chassis
+     * @brief Initialize the localization chassis
      * @note ONLY INITIALIZE THIS WHEN YOUR ROBOT IS NOT MOVING!
      *
      * @param settings customizable trust and gain options for the localization algorithm
@@ -60,6 +61,12 @@ public:
      * @param heading The heading of the robot
      */
     void perform_dsr_init(tr_quadrant quadrant, float heading);
+
+    /**
+     * @breif Gets the robots quadrant based on its coordinates
+     * @return The quadrant of the robot
+     */
+    tr_quadrant get_quadrant();
 
     /**
      * @brief Starts an odometry system and distance sensor system recording in a background task
@@ -128,18 +135,12 @@ public:
     tr_quadrant sensor_relevancy(float heading);
 
     /**
-     * @breif Gets the robots quadrant based on its coordinates
-     * @return The quadrant of the robot
-     */
-    tr_quadrant get_quadrant();
-
-    /**
      * @brief Average confidence of value pair
      * @param one first confidence pair
      * @param two second confidence pair
      * @return Average confidence of value pair
      */
-    static float conf_avg(tr_conf_pair<float> one, tr_conf_pair<float> two);
+    static float conf_avg(tr_distance one, tr_distance two);
 
 
     /**
@@ -166,9 +167,9 @@ public:
      */
     static void shutdown_display();
 
-/**
+    /**
      * @breif Uses flags to return whether a sensor is being used.
-     * @note Active sensors are set in the localization loop or by doing a distance sensor reset
+     * @note Active sensors are set by performing a distance sensor reset.
      * @param r_sensor sensor flags
      * @return whether that sensor is being used.
      */
