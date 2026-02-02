@@ -3,7 +3,7 @@
 
 
 /*
-* Comment or 
+* Comment or uncomment for which template you are using
 */
 
 #define TR_LEMLIB
