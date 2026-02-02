@@ -1,6 +1,54 @@
 #include "TRSensor.hpp"
 #include "../pros/imu.hpp"
-#include "../lemlib/chassis/chassis.hpp"
+
+
+/*
+* Comment or 
+*/
+
+#define TR_LEMLIB
+//#define TR_EZTEMPLATE
+
+#ifdef TR_LEMLIB
+
+#include "../../lemlib/chassis/chassis.hpp"
+#include "TRTypes.hpp"
+
+/**
+ * @brief Implemented version of the generic drivebase class to enable support with lemlib.
+ */
+class tr_lemlib : public tr_drivebase_generic
+{
+    public:
+    lemlib::Chassis* chassis;
+
+    tr_lemlib(lemlib::Chassis* chassis_ptr) : chassis(chassis_ptr) {}
+
+    tr_vector3 getPose() override
+    {
+        tr_vector3 vec_ret;
+        lemlib::Pose current = chassis->getPose();
+
+        vec_ret.x = current.x;
+        vec_ret.y = current.y;
+        vec_ret.z = current.theta;
+
+        return vec_ret;
+    }
+
+    void setPose(tr_vector3 new_pose) override
+    {
+        lemlib::Pose set_pose(0,0,0);
+
+        set_pose.x = new_pose.x;
+        set_pose.y = new_pose.y;
+        set_pose.theta = new_pose.z;
+
+        chassis->setPose(set_pose);
+    }
+};
+
+#endif
 
 /**
  * Options used by TitanReset when initializing the TitanReset chassis.
@@ -31,7 +79,7 @@ public:
      * @param base pointer to the lemlib chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(tr_options settings, pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors);
+    tr_chassis(tr_options settings, pros::Imu* inertial, tr_drivebase_generic* base, std::array<tr_sensor*,4> sensors);
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot already knows where it is and where it is facing.
@@ -199,9 +247,9 @@ private:
     pros::Imu* imu;
 
     /** 
-     * LemLib reference
+     * Drivebase reference
      */
-    lemlib::Chassis* chassis;
+    tr_drivebase_generic* chassis;
 
     /**
      * Provided options

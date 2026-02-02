@@ -182,6 +182,18 @@ struct tr_vector2
 };
 
 /**
+ * @brief Generic drivebase class to allow support of any template.
+ */
+class tr_drivebase_generic
+{
+public:
+    tr_drivebase_generic() {}
+
+    virtual tr_vector3 getPose() = 0;
+    virtual void setPose(tr_vector3 new_pose) = 0;
+};
+
+/**
  * Rctangle object used by TitanReset to determine if a reset is reads a valid location on the field.
  */
 struct tr_rectangle

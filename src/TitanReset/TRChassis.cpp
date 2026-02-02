@@ -1,6 +1,5 @@
 #include "../../include/TitanReset/TRChassis.hpp"
 #include "../../include/TitanReset/TRConstants.hpp"
-#include "../../include/lemlib/api.hpp"
 #include "../../include/pros/imu.hpp"
 #include "../../include/pros/llemu.hpp"
 #include <fstream>
@@ -80,7 +79,7 @@ void tr_chassis::set_active_sensors(int sensors)
     active_sensors |= sensors;
 }
 
-tr_chassis::tr_chassis(tr_options settings, pros::Imu *inertial, lemlib::Chassis* chas ,std::array<tr_sensor *,4> sensors) : options(settings), active_sensors(0), b_display(false), location_task(nullptr)
+tr_chassis::tr_chassis(tr_options settings, pros::Imu *inertial, tr_drivebase_generic* chas ,std::array<tr_sensor *,4> sensors) : options(settings), active_sensors(0), b_display(false), location_task(nullptr)
 {
     north = sensors.at(0);
     east = sensors.at(1);
@@ -92,7 +91,7 @@ tr_chassis::tr_chassis(tr_options settings, pros::Imu *inertial, lemlib::Chassis
 
 tr_quadrant tr_chassis::sensor_relevancy()
 {
-    float heading = quadrant_recursive(chassis->getPose().theta);
+    float heading = quadrant_recursive(chassis->getPose().z);
 
     if ((heading >= 0 && heading <= 45) || (heading <= 360 && heading > 315))
     {
@@ -144,7 +143,7 @@ tr_quadrant tr_chassis::sensor_relevancy(float heading)
 
 tr_quadrant tr_chassis::get_quadrant()
 {
-    lemlib::Pose cur_pose = chassis->getPose();
+    tr_vector3 cur_pose = chassis->getPose();
 
     if (cur_pose.x > 0 && cur_pose.y > 0)
     {
@@ -171,7 +170,7 @@ tr_quadrant tr_chassis::get_quadrant()
 //n_p, n_p
 tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadrant)
 {
-    return get_position_calculation(quadrant, chassis->getPose().theta);
+    return get_position_calculation(quadrant, chassis->getPose().z);
 }
 
 tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadrant, float heading)
@@ -375,7 +374,7 @@ bool tr_chassis::perform_dsr(bool trust_sensors)
 
 bool tr_chassis::perform_dsr_quad(tr_quadrant quadrant, bool trust_sensors)
 {
-    lemlib::Pose pose = chassis->getPose();
+    tr_vector3 pose = chassis->getPose();
     tr_conf_pair<tr_vector3> coords = get_position_calculation(quadrant);
 
     if (coords.get_confidence() > options.sensor_trust && trust_sensors == false) return false;
@@ -389,9 +388,9 @@ bool tr_chassis::perform_dsr_quad(tr_quadrant quadrant, bool trust_sensors)
 
 void tr_chassis::perform_dsr_init(tr_quadrant quadrant, float heading)
 {
-    lemlib::Pose pose = chassis->getPose();
+    tr_vector3 pose = chassis->getPose();
     imu->set_heading(heading);
-    chassis->setPose(lemlib::Pose(0,0,heading));
+    chassis->setPose(tr_vector3(0,0,heading));
     tr_conf_pair<tr_vector3> coords = get_position_calculation(quadrant, heading);
 
     pose.x = coords.get_value().x;
@@ -429,14 +428,14 @@ void tr_chassis::update_display(tr_chassis* chassis)
     std::string quads = chassis->get_quadrant_string(chassis->get_quadrant());
     std::string squad = chassis->get_quadrant_string(chassis->sensor_relevancy());
 
-    lemlib::Pose pose_lem = chassis->chassis->getPose();
+    tr_vector3 pose_lem = chassis->chassis->getPose();
 
     pros::lcd::print(0, "SQ: %s, %s", quads.c_str(), squad.c_str());
     pros::lcd::print(1, "SU: N %i, E %i, S %i, W %i", north, east, south, west);
     pros::lcd::print(2, "SR: N %.2f, E %.2f, S %.2f, W %.2f", dis_n, dis_e, dis_s, dis_w);
     pros::lcd::print(3, "SC: N %.2f, E %.2f, S %.2f, W %.2f", confidence_n, confidence_e, confidence_s, confidence_w);
     pros::lcd::print(4, "PS: X: %.2f,Y: %.2f,H: %.2f,C: %.2f", position.get_value().x, position.get_value().y, heading, position.get_confidence());
-    pros::lcd::print(5, "LC: X: %.2f,Y: %.2f,H: %.2f,S: %i", pose_lem.x, pose_lem.y, pose_lem.theta, use_pose);
+    pros::lcd::print(5, "LC: X: %.2f,Y: %.2f,H: %.2f,S: %i", pose_lem.x, pose_lem.y, pose_lem.z, use_pose);
 }
 
 void tr_chassis::shutdown_display()
@@ -460,9 +459,9 @@ void tr_chassis::start_location_recording(std::string date, std::string time)
 
         while (true)
         {
-            lemlib::Pose pose = chassis->getPose();
+            tr_vector3 pose = chassis->getPose();
             tr_vector3 pose1 = get_position_calculation(get_quadrant()).get_value();
-            output << pose.x << ", " << pose.y << ", " << pose.theta << "\n";
+            output << pose.x << ", " << pose.y << ", " << pose.z << "\n";
             output2 << pose1.x << ", " << pose1.y << ", " << pose1.z << "\n";
             pros::Task::delay(50);
         }
