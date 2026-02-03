@@ -634,7 +634,11 @@
                 "version": "9.2.0"
             }
         },
-        "upload_options": {},
+        "upload_options": {
+            "description": "TitanReset testing project",
+            "icon": "clawbot",
+            "slot": 3
+        },
         "use_early_access": false
     }
 }

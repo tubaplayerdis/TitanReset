@@ -1,4 +1,7 @@
+#pragma once
+
 #include <math.h>
+#include <array>
 
 /**
  * TitanReset Quadrant enumeration.
@@ -191,49 +194,4 @@ public:
 
     virtual tr_vector3 getPose() = 0;
     virtual void setPose(tr_vector3 new_pose) = 0;
-};
-
-/**
- * Rctangle object used by TitanReset to determine if a reset is reads a valid location on the field.
- */
-struct tr_rectangle
-{
-    tr_vector2 lower_bound;
-    tr_vector2 upper_bound;
-
-    tr_rectangle(const float lx, const float ly, const float ux, const float uy) : lower_bound(lx, ly), upper_bound(ux, uy) {}
-    tr_rectangle(tr_vector2 l, tr_vector2 u) : lower_bound(l), upper_bound(u) {}
-
-    bool inside(float x, float y) const
-    {
-        return inside(tr_vector2(x, y));
-    }
-
-    bool inside(tr_vector2 pos) const
-    {
-        return (pos.x >= lower_bound.x && pos.x <= upper_bound.x) && (pos.y >= lower_bound.y && pos.y <= upper_bound.y);
-    }
-};
-
-/**
- * Circle object used by TitanReset to determine if a reset is reads a valid location on the field.
- */
-struct tr_circle
-{
-    tr_vector2 center;
-    float radius;
-
-    tr_circle(float x, float y, float r) : center(x, y), radius(r) {}
-    tr_circle(tr_vector2 c, float r) : center(c), radius(r) {}
-
-    bool inside(float x, float y)
-    {
-        return inside(tr_vector2(x, y));
-    }
-
-    bool inside(tr_vector2 pos) const
-    {
-        //distance formula
-        return sqrt(std::pow(pos.x - center.x,2) + std::pow(pos.y - center.y, 2)) <= radius;
-    }
 };

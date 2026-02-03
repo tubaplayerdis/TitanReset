@@ -1,3 +1,5 @@
+#pragma once
+
 #include "TRTypes.hpp"
 #include "../pros/distance.hpp"
 

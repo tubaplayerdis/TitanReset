@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 * Every constant used by TitanReset. Changing these values will highly unrecommended as it will cause major issues.
 */

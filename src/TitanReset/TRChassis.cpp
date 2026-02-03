@@ -2,7 +2,42 @@
 #include "../../include/TitanReset/TRConstants.hpp"
 #include "../../include/pros/imu.hpp"
 #include "../../include/pros/llemu.hpp"
+#include "../../include/lemlib/chassis/chassis.hpp"
 #include <fstream>
+
+/**
+ * @brief Implemented version of the generic drivebase class to enable support with lemlib.
+ */
+class tr_lem_base : public tr_drivebase_generic
+{
+    public:
+    lemlib::Chassis* chassis;
+
+    tr_lem_base(lemlib::Chassis* chassis_ptr) : chassis(chassis_ptr) {}
+
+    tr_vector3 getPose() override
+    {
+        tr_vector3 vec_ret;
+        lemlib::Pose current = chassis->getPose();
+
+        vec_ret.x = current.x;
+        vec_ret.y = current.y;
+        vec_ret.z = current.theta;
+
+        return vec_ret;
+    }
+
+    void setPose(tr_vector3 new_pose) override
+    {
+        lemlib::Pose set_pose(0,0,0);
+
+        set_pose.x = new_pose.x;
+        set_pose.y = new_pose.y;
+        set_pose.theta = new_pose.z;
+
+        chassis->setPose(set_pose);
+    }
+};
 
 float tr_chassis::quadrant_recursive(float heading)
 {
@@ -19,42 +54,9 @@ float tr_chassis::quadrant_recursive(float heading)
     return heading;
 }
 
-static const tr_rectangle north_goal_exclusion(-22, 44, 22, 49);
-static const tr_rectangle south_goal_exclusion(-22, -44, 22, -49);
-static const tr_rectangle mid_goal_exclusion(-7, -7, 7, -7);
-
-static const tr_circle pos_pos_ml_exclusion(67.5, 47, 5);
-static const tr_circle neg_pos_ml_exclusion(-67.5, 47, 5);
-static const tr_circle neg_neg_ml_exclusion(-67.5, -47, 5);
-static const tr_circle pos_neg_ml_exclusion(-67.5, 47, 5);
-
 bool tr_chassis::can_position_exist(tr_vector3 pose)
 {
-    tr_vector2 loc = tr_vector2(pose.x, pose.y);
-
-    if (pose.x > wall_coord || pose.y > wall_coord || pose.x < -wall_coord || pose.y < -wall_coord) return false;
-
-    if (pose.x > 0 && pose.y > 0)
-    {
-        return !(north_goal_exclusion.inside(loc) && mid_goal_exclusion.inside(loc) && pos_pos_ml_exclusion.inside(loc));
-    }
-
-    if (pose.x > 0 && pose.y < 0)
-    {
-        return !(north_goal_exclusion.inside(loc) && mid_goal_exclusion.inside(loc) && neg_pos_ml_exclusion.inside(loc));
-    }
-
-    if (pose.x < 0 && pose.y < 0)
-    {
-        return !(south_goal_exclusion.inside(loc) && mid_goal_exclusion.inside(loc) && neg_neg_ml_exclusion.inside(loc));
-    }
-
-    if (pose.x > 0 && pose.y < 0)
-    {
-        return !(south_goal_exclusion.inside(loc) && mid_goal_exclusion.inside(loc) && pos_neg_ml_exclusion.inside(loc));
-    }
-
-    return false;
+    return true;
 }
 
 std::string tr_chassis::get_quadrant_string(tr_quadrant quadr)
@@ -79,14 +81,19 @@ void tr_chassis::set_active_sensors(int sensors)
     active_sensors |= sensors;
 }
 
-tr_chassis::tr_chassis(tr_options settings, pros::Imu *inertial, tr_drivebase_generic* chas ,std::array<tr_sensor *,4> sensors) : options(settings), active_sensors(0), b_display(false), location_task(nullptr)
+tr_chassis::tr_chassis(tr_options settings, pros::Imu *inertial, lemlib::Chassis* chas ,std::array<tr_sensor *,4> sensors) : options(settings), active_sensors(0), b_display(false), location_task(nullptr)
 {
     north = sensors.at(0);
     east = sensors.at(1);
     south = sensors.at(2);
     west = sensors.at(3);
     imu = inertial;
-    chassis = chas;
+    chassis = new tr_lem_base(chas);
+}
+
+tr_chassis::~tr_chassis()
+{
+    delete chassis;
 }
 
 tr_quadrant tr_chassis::sensor_relevancy()
@@ -476,4 +483,9 @@ void tr_chassis::stop_location_recording()
         location_task->suspend();
         delete location_task;
     }
+}
+
+bool tr_chassis::is_sensor_used(int r_sensor)
+{
+    return active_sensors & (r_sensor);
 }

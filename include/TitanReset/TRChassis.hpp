@@ -1,54 +1,8 @@
+#pragma once
+
 #include "TRSensor.hpp"
 #include "../pros/imu.hpp"
-
-
-/*
-* Comment or uncomment for which template you are using
-*/
-
-#define TR_LEMLIB
-//#define TR_EZTEMPLATE
-
-#ifdef TR_LEMLIB
-
-#include "../../lemlib/chassis/chassis.hpp"
-#include "TRTypes.hpp"
-
-/**
- * @brief Implemented version of the generic drivebase class to enable support with lemlib.
- */
-class tr_lemlib : public tr_drivebase_generic
-{
-    public:
-    lemlib::Chassis* chassis;
-
-    tr_lemlib(lemlib::Chassis* chassis_ptr) : chassis(chassis_ptr) {}
-
-    tr_vector3 getPose() override
-    {
-        tr_vector3 vec_ret;
-        lemlib::Pose current = chassis->getPose();
-
-        vec_ret.x = current.x;
-        vec_ret.y = current.y;
-        vec_ret.z = current.theta;
-
-        return vec_ret;
-    }
-
-    void setPose(tr_vector3 new_pose) override
-    {
-        lemlib::Pose set_pose(0,0,0);
-
-        set_pose.x = new_pose.x;
-        set_pose.y = new_pose.y;
-        set_pose.theta = new_pose.z;
-
-        chassis->setPose(set_pose);
-    }
-};
-
-#endif
+#include "../lemlib/chassis/chassis.hpp"
 
 /**
  * Options used by TitanReset when initializing the TitanReset chassis.
@@ -79,7 +33,7 @@ public:
      * @param base pointer to the lemlib chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(tr_options settings, pros::Imu* inertial, tr_drivebase_generic* base, std::array<tr_sensor*,4> sensors);
+    tr_chassis(tr_options settings, pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors);
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot already knows where it is and where it is facing.
@@ -156,10 +110,11 @@ public:
     static float quadrant_recursive(float heading);
 
     /**
-     * @breif Compares the location against locations the robot physically cannot exist at such as inside the match loader or out of bounds.
+     * @warning THIS IS NOT IMPLEMENTED AS OF CURRENT. WILL ALWYAS RETURN TRUE.
+     * @brief Compares the location against locations the robot physically cannot exist at such as inside the match loader or out of bounds based on the robots current position and size.
      *
      * @param pose current location vector
-     * @returns whether the location can physically eist.
+     * @returns whether the location can physically exist.
      */
     static bool can_position_exist(tr_vector3 pose);
 
@@ -221,10 +176,9 @@ public:
      * @param r_sensor sensor flags
      * @return whether that sensor is being used.
      */
-    bool is_sensor_used(int r_sensor)
-    {
-        return active_sensors & (r_sensor);
-    }
+    bool is_sensor_used(int r_sensor);
+
+    ~tr_chassis();
 
 private:
 

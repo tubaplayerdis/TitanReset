@@ -113,9 +113,8 @@ tr_sensor south({4, 1}, 10);
  * Port 10
  */
 tr_sensor west({7, 2}, 10);
-tr_lemlib drivebase(&chassis);
 
-tr_chassis dsr_system({}, &imu, &drivebase, {&north, &east, &south, &west});
+tr_chassis dsr_system({}, &imu, &chassis, {&north, &east, &south, &west});
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
