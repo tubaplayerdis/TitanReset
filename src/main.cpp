@@ -96,7 +96,7 @@ tr_sensor north({6, 3}, 10);
  * 1.5 inches away in the perpendicular direction it is facing from the center axis of the robot
  * Port 10
  */
-tr_sensor east({4, 1.5}, 10);
+tr_sensor east({4, 1.5}, 11);
 
 /**
  * North sensor
@@ -104,7 +104,7 @@ tr_sensor east({4, 1.5}, 10);
  * 1 inch away in the perpendicular direction it is facing from the center axis of the robot
  * Port 10
  */
-tr_sensor south({4, 1}, 10);
+tr_sensor south({4, 1}, 12);
 
 /**
  * North sensor
@@ -112,7 +112,7 @@ tr_sensor south({4, 1}, 10);
  * 2 inches away in the perpendicular direction it is facing from the center axis of the robot
  * Port 10
  */
-tr_sensor west({7, 2}, 10);
+tr_sensor west({7, 2}, 13);
 
 tr_chassis dsr_system({}, &imu, &chassis, {&north, &east, &south, &west});
 
