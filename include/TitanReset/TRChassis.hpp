@@ -36,6 +36,17 @@ public:
     tr_chassis(tr_options settings, pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors);
 
     /**
+     * @brief Initialize the localization chassis
+     * @note ONLY INITIALIZE THIS WHEN YOUR ROBOT IS NOT MOVING!
+     *
+     * @param settings customizable trust and gain options for the localization algorithm
+     * @param inertial pointer to the inertial sensor on the robot
+     * @param base pointer to the lemlib chassis of the robot
+     * @param sensors array of pointers to the localization sensors of the robot
+     */
+    tr_chassis(tr_options settings, pros::Imu* inertial, tr_drivebase_generic* base, std::array<tr_sensor*,4> sensors);
+
+    /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot already knows where it is and where it is facing.
      *
      * @param trust_sensors Whether to ignore the sensor trust threshold defined in the options

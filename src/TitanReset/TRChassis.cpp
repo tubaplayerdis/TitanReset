@@ -91,6 +91,16 @@ tr_chassis::tr_chassis(tr_options settings, pros::Imu *inertial, lemlib::Chassis
     chassis = new tr_lem_base(chas);
 }
 
+tr_chassis::tr_chassis(tr_options settings, pros::Imu *inertial, tr_drivebase_generic* chas ,std::array<tr_sensor *,4> sensors) : options(settings), active_sensors(0), b_display(false), location_task(nullptr)
+{
+    north = sensors.at(0);
+    east = sensors.at(1);
+    south = sensors.at(2);
+    west = sensors.at(3);
+    imu = inertial;
+    chassis = chas;
+}
+
 tr_chassis::~tr_chassis()
 {
     delete chassis;
