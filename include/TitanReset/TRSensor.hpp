@@ -47,7 +47,7 @@ public:
 public:
 
     /**
-     * @breif Recursive function mapping the heading into the domain of -45 to 45 degrees to use with trigonometric functions
+     * @breif Function mapping the heading into the domain of -45 to 45 degrees to use with trigonometric functions
      */
-    static float octant_recursive(float heading);
+    static float relative_square(float heading);
 };

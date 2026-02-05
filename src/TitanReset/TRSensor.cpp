@@ -6,21 +6,15 @@ tr_sensor::tr_sensor(tr_vector2 offset, int port) :
             sensor(port)
 {}
 
-float tr_sensor::octant_recursive(float heading)
+float tr_sensor::relative_square(float heading)
 {
-    if (static_cast<int>(heading) % 45 == 0) return 1;
+    float wrapped = fmod(heading, 360.0f);
+    if (wrapped < 0) wrapped += 360.0f;
 
-    if (heading < -45.0)
-    {
-        return octant_recursive(heading + 90.0);
-    }
-
-    if (heading > 45.0)
-    {
-        return octant_recursive(heading - 90.0);
-    }
-
-    return heading;
+    // Find distance to the nearest 90-degree increment
+    // This gives you how "un-square" the robot is to the wall
+    float relative = fmod(wrapped + 45.0f, 90.0f) - 45.0f;
+    return relative;
 }
 
 tr_conf_pair<float> tr_sensor::distance()
@@ -40,7 +34,7 @@ tr_conf_pair<float> tr_sensor::distance(float heading)
 
     auto reading = sensor_reading * mm_inch_conversion_factor;
 
-    heading = tr_sensor::octant_recursive(heading);
+    heading = tr_sensor::relative_square(heading);
 
     float heading_err_rad = heading * deg_rad_conversion_factor;
 
@@ -48,5 +42,5 @@ tr_conf_pair<float> tr_sensor::distance(float heading)
     float parallel_offset = cos(heading_err_rad) * offset.x;
     float perpendicular_offset = sin(heading_err_rad) * offset.y;
 
-    return tr_conf_pair<float>(actual_reading + parallel_offset + perpendicular_offset, sensor_confidence);
+    return tr_conf_pair<float>(actual_reading + parallel_offset - perpendicular_offset, sensor_confidence);
 }
