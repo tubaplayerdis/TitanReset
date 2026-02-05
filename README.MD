@@ -10,7 +10,7 @@
 
 ## Written Tutorials
 
-[Physical Setup]()  
+[Physical Setup](Docs/PhysicalSetup.MD)  
 [Programming (LemLib)]()  
 [Programming (EZ-Template)]()  
 
