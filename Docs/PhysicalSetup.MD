@@ -76,7 +76,7 @@ This sensor mount is **invalid** even though it is unobstructed for the followin
 
 ## Sensor Offsets
 
-To make the sensors accurate, you need to find the **perpendicular (X) and parrallel (Y)** offsets of the sensors of your robot.
+To make the sensors accurate, you need to find the **parrallel (X) and perpendicular (Y)** offsets of the sensors of your robot.
 
 These are calculated from the origin to the **sensors camera**. **The origin is the center of your robot**
 
