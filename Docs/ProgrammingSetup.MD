@@ -38,8 +38,8 @@ After that, run the following commands in order to **install TitanReset**.
 ## Programming Setup
 
 > [!NOTE]
-> You do not literally have to paste the all of the following code into `main.cpp`. This guide assume that you have your template objects defined there
-> **If you LemLib/EZ-Template objects are defined somewhere else, use the file that contains those definitions instead.**
+> You do not literally have to paste the all of the following code into `main.cpp`. This guide assume that you have your template objects defined in main.cpp
+> ,**If your LemLib/EZ-Template objects are defined somewhere else, use the file that contains those definitions instead.**
 
 ### Adding TitanReset to your file
 
