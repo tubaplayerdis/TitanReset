@@ -170,7 +170,7 @@ tr_chassis dsr_system({}, &chassis.imu, &chassis, {&north, &east, &south, &west}
 Notes:
  - If your EZ-Template drive object is named something else, change the parameter names to match the name of the drive (default called chassis)
 
-Paste the following code into your `subsystems.hpp` file to allow your autons to access the TitanReset chassis. **Paste this below the `extern Drive chassis` code.
+Paste the following code into your `subsystems.hpp` file to allow your autons to access the TitanReset chassis. **Paste this below** the `extern Drive chassis` code.
 
 ```cpp
 extern tr_chassis dsr_system;
