@@ -1,7 +1,6 @@
 #include "main.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "TitanReset/TRChassis.hpp"
-#include "TitanReset/TRSensor.hpp"
+#include "TitanReset/TitanReset.hpp"
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -84,36 +83,43 @@ lemlib::Chassis chassis(drivetrain, linearController, angularController, sensors
 
 /**
  * North sensor
- * 6 inches away in the direction it is facing from the center axis of the robot
- * 3 inches away in the perpendicular direction it is facing from the center axis of the robot
- * Port 10
+ * X is your parrallel offset
+ * Y is your perpendicular offset
+ * P is the port of your sensor
  */
-tr_sensor north({6, 3}, 10);
+tr_sensor north({5.823, -4.694}, 10);
 
 /**
- * North sensor
- * 4 inches away in the direction it is facing from the center axis of the robot
- * 1.5 inches away in the perpendicular direction it is facing from the center axis of the robot
- * Port 10
+ * East sensor
+ * X is your parrallel offset
+ * Y is your perpendicular offset
+ * P is the port of your sensor
  */
-tr_sensor east({4, 1.5}, 11);
+tr_sensor east({5.137, 3.23}, 11);
 
 /**
- * North sensor
- * 4 inches away in the direction it is facing from the center axis of the robot
- * 1 inch away in the perpendicular direction it is facing from the center axis of the robot
- * Port 10
+ * South sensor
+ * X is your parrallel offset
+ * Y is your perpendicular offset
+ * P is the port of your sensor
  */
-tr_sensor south({4, 1}, 12);
+tr_sensor south({4.861, 5.25}, 12);
 
 /**
- * North sensor
- * 7 inches away in the direction it is facing from the center axis of the robot
- * 2 inches away in the perpendicular direction it is facing from the center axis of the robot
- * Port 10
+ * West sensor
+ * X is your parrallel offset
+ * Y is your perpendicular offset
+ * P is the port of your sensor
  */
-tr_sensor west({7, 2}, 13);
+tr_sensor west({5.137, 3.744}, 13);
 
+/**
+ * TitanReset Chassis
+ * {} - Defualt TitanReset settings
+ * &imu - pointer to IMU
+ * &chassis - pointer to LemLib chassis
+ * {&north, &east, &south, &west} - Array of pointers to sensors.
+ */
 tr_chassis dsr_system({}, &imu, &chassis, {&north, &east, &south, &west});
 
 /**

@@ -74,7 +74,7 @@ This sensor mount is **invalid** even though it is unobstructed for the followin
 
 ![alt text](image-7.png)
 
-## Sensor Offsets
+## Measuring Sensor Offsets
 
 To make the sensors accurate, you need to find the **parrallel (X) and perpendicular (Y)** offsets of the sensors of your robot.
 
@@ -130,9 +130,22 @@ Collect all of your offsets for each sensor. Write them down or store then somew
  - North `X: 5.823, Y: -4.694`
  - East `X: 5.137, Y: 3.23`
  - South `X: 4.861, Y: 5.25`
- - West `X: 5.127, Y: 3.744`
+ - West `X: 5.137, Y: 3.744`
 
 ## Physical Setup Complete!
 
-You just completed the hard part of TitanReset! Learn how to program your new sensors with TitanReset to improve your autons [here]()
+You just completed the hard part of TitanReset! Learn how to program your new sensors with TitanReset to improve your autons [here](ProgrammingSetup.MD)
 
+___
+
+### Pro tip - you can change the orientation of the V5 distance sensor module on the base
+
+Since the distance sensor module is seperate to the base and held in with 4 screws in the same pattern, the module itself can be rotated to fit in ways that might not of before seemed possible.
+
+![alt text](image-13.png)
+
+##### Default sensor orientation
+
+![alt text](image-14.png)
+
+##### Modified sensor orientation
