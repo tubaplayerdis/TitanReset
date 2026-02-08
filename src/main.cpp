@@ -120,7 +120,7 @@ tr_sensor west({5.137, 3.744}, 13);
  * &chassis - pointer to LemLib chassis
  * {&north, &east, &south, &west} - Array of pointers to sensors.
  */
-tr_chassis dsr_system({}, &imu, &chassis, {&north, &east, &south, &west});
+tr_chassis dsr_system(&imu, &chassis, {&north, &east, &south, &west});
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.

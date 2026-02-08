@@ -95,17 +95,16 @@ An example of this would be using DSR while at the middle goal, which would most
 TitanReset provides a different functions for using DSR after starting an auton. Here is a description of these functions below:
 
 ```cpp
-bool perform_dsr(bool trust_sensors = false);
+void perform_dsr();
 ```
 
 #### This is the best general use DSR function, and should be used in most cases.
 
 ```cpp
-bool perform_dsr_quad(tr_quadrant quadrant, bool trust_sensors = false);
+void perform_dsr_quad(tr_quadrant quadrant);
 ```
 
-#### This function should be used an alternative to perform_dsr(), when you are unsure of which quadrant the robot is in (such as a parking zone cross)
-
+#### This function should be used an alternative to perform_dsr(), when you are unsure of which quadrant the robot is in (such as after a parking zone cross)
 
 ## Using JerryIO to create autons
 

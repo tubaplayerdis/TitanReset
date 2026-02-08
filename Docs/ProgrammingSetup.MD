@@ -142,12 +142,11 @@ Paste the following code into your `main.cpp` file to setup the TitanReset chass
 ```cpp
 /**
  * TitanReset Chassis
- * {} - Defualt TitanReset settings
  * &imu - pointer to IMU
  * &chassis - pointer to LemLib chassis
  * {&north, &east, &south, &west} - Array of pointers to sensors.
  */
-tr_chassis dsr_system({}, &imu, &chassis, {&north, &east, &south, &west});
+tr_chassis dsr_system(&imu, &chassis, {&north, &east, &south, &west});
 ```
 Notes:
  - If your imu object or lemlib chassis object are named something else, change the parameter names to match the name of the chassis or imu. (default called chassis & imu)
@@ -159,12 +158,11 @@ Paste the following code into your `main.cpp` file to setup the TitanReset chass
 ```cpp
 /**
  * TitanReset Chassis
- * {} - Defualt TitanReset settings
  * &chassis.imu - pointer to IMU
  * &chassis - pointer to EZ-Template Drive
  * {&north, &east, &south, &west} - Array of pointers to sensors.
  */
-tr_chassis dsr_system({}, &chassis.imu, &chassis, {&north, &east, &south, &west});
+tr_chassis dsr_system(&chassis.imu, &chassis, {&north, &east, &south, &west});
 ```
 
 Notes:
@@ -178,4 +176,4 @@ extern tr_chassis dsr_system;
 
 ## Thats all for setup!
 
-Read the [next tutorial]() on how to accurately and reliably use DSR in your autons!
+Read the [next tutorial](ProgrammingUsage.MD) on how to accurately and reliably use DSR in your autons!

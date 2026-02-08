@@ -14,7 +14,7 @@ struct tr_options
     /**
      * Sensor trust threshold on whether to use dsr if called. 0 is least trust and 1 is full trust.
      */
-    const float sensor_trust = 0.5;
+    const float sensor_trust = 1.0;
 };
 
 /**
@@ -33,7 +33,7 @@ public:
      * @param base pointer to the lemlib chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(tr_options settings, pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors);
+    tr_chassis(pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors);
 
     /**
      * @brief Initialize the localization chassis
@@ -44,15 +44,12 @@ public:
      * @param base pointer to the lemlib chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(tr_options settings, pros::Imu* inertial, tr_drivebase_generic* base, std::array<tr_sensor*,4> sensors);
+    tr_chassis(pros::Imu* inertial, tr_drivebase_generic* base, std::array<tr_sensor*,4> sensors);
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot already knows where it is and where it is facing.
-     *
-     * @param trust_sensors Whether to ignore the sensor trust threshold defined in the options
-     * @return Whether the function decided to reset the location of the robot
      */
-    bool perform_dsr(bool trust_sensors = false);
+    void perform_dsr();
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot does not know which quadrant it is in.
@@ -60,9 +57,8 @@ public:
      * @note Use this function after a movement that performs an action such as driving over a parking zone which crosses quadrants.
      *
      * @param quad The quadrant the robot is currently in
-     * @return Whether the function decided to reset the location of the robot
      */
-    bool perform_dsr_quad(tr_quadrant quadrant, bool trust_sensors = false);
+    void perform_dsr_quad(tr_quadrant quadrant);
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot does not know where it is and the sensors are fully trusted.
