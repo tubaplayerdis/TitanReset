@@ -103,11 +103,13 @@ The offset of this sensor would be: `X: 4.861, Y: 5.25`.
 
 ![alt text](image-12.png)
 
-The offsets for this sensor would be `X: 5.137, Y: 3.23`.
+The offsets for this sensor would be `X: 5.137, Y: -3.23`.
 
 The X (parrallel) offset would be **red** line in this case since it is parrallel to the direction the sensor is facing
 
 The Y (perpendicular) offset would be the **blue** line since this line is 90 degrees to the sensor the direction is facing
+
+The perpendicular offset for this sensor would be **negative** since the sensor is past the origin in that direction near the back of the robot 
 
 ##### Negative Offset Example
 
@@ -128,9 +130,9 @@ Collect all of your offsets for each sensor. Write them down or store then somew
 ##### Collected Offsets Example (Matches above except for negative example)
 
  - North `X: 5.823, Y: -4.694`
- - East `X: 5.137, Y: 3.23`
+ - East `X: 5.137, Y: -3.23`
  - South `X: 4.861, Y: 5.25`
- - West `X: 5.137, Y: 3.744`
+ - West `X: 5.137, Y: -3.744`
 
 ## Physical Setup Complete!
 
