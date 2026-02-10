@@ -173,9 +173,9 @@ void competition_initialize() {}
 void autonomous() {
 
 	/*
-	* Perform a distance sensor reset and set the heading of the robot to 270
+	* Perform a distance sensor reset and set the heading of the robot to 90
 	*/
-	dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270);
+	dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 90);
 
 
     // Move to x: 20 and y: 15, and face heading 90. Timeout set to 4000 ms

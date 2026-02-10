@@ -8,13 +8,13 @@
 [Programming (Seutp)](Docs/ProgrammingSetup.MD)  
 [Programming (Usage)](Docs/ProgrammingUsage.MD)  
 
-## Video Tutorials 
+## Video Tutorials (COMING SOON)
 
 [Mounting & Physical Setup]()  
 [Programming (Seutp)]()  
 [Programming (Usage)]()  
 
-## Docs
+## Docs (COMING SOON)
 
 [Docs]()
 

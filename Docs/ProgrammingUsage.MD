@@ -106,6 +106,36 @@ void perform_dsr_quad(tr_quadrant quadrant);
 
 #### This function should be used an alternative to perform_dsr(), when you are unsure of which quadrant the robot is in (such as after a parking zone cross)
 
+## Pseudo-code Example
+
+This example goes over a peudocode representation of what using DSR looks like, and how to use it best.
+
+```cpp
+void super_auton()
+{
+    /*
+    * The robot is in the -- quadrant
+    * The robot is facing 270 degrees
+    */
+    dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270);
+
+    drive_to_match_loader();
+
+    // Perform DSR at a famillar location.
+    dsr_system.perform_dsr();
+
+    drive_to_long_goal();
+
+    // Perform DSR at a famillar location.
+    dsr_system.perform_dsr();
+
+    cross_parking_zone();
+
+    // Perform DSR after a odom movement that could cause major drift.
+    dsr.system.perform_dsr_quad(tr_quadrant::NEG_POS)
+}
+```
+
 ## Using JerryIO to create autons
 
 Since TitanReset uses absolute coordinates, you can use [JerryIO](path.jerryio.com) to plan your movmements. Following with the example above, is an example movement showing the power of TitanReset and jerryIO.
@@ -115,7 +145,7 @@ Since TitanReset uses absolute coordinates, you can use [JerryIO](path.jerryio.c
 
 Here is an example movement in JerryIO:
 
-![alt text](image-15.png)
+![alt text](image-16.png)
 
 The coordinates of the point in the example movement are: `-22, -23, 315`
 
@@ -128,15 +158,15 @@ void super_auton()
 {
     /*
     * The robot is in the -- quadrant
-    * The robot is facing 270 degrees
+    * The robot is facing 90 degrees
     */
-    dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 270);
+    dsr_system.perform_dsr_init(tr_quadrant::NEG_NEG, 90);
 
     /*
     * Move to the point in the example from the JerryIO coordinates
     * Default settings
     * Syncronous (waiting) function
     */
-    chassis.moveToPose(-22, -23, 315, 1000, {}, false)
+    chassis.moveToPose(-22, -23, 125, 1000, {}, false)
 }
 ```
