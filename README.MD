@@ -2,16 +2,16 @@
 
 #### PROS library that adds DSR (distance sensor reset) functionality to your robot. Created by V5RC Team 38535A
 
-## Video Tutorials 
-
-[Mounting & Physical Setup]()  
-[Programming (LemLib)]()  
-[Programming (EZ-Template)]()  
-
 ## Written Tutorials
 
 [Physical Setup](Docs/PhysicalSetup.MD)  
 [Programming (Seutp)](Docs/ProgrammingSetup.MD)  
+[Programming (Usage)](Docs/ProgrammingUsage.MD)  
+
+## Video Tutorials 
+
+[Mounting & Physical Setup]()  
+[Programming (Seutp)]()  
 [Programming (Usage)]()  
 
 ## Docs
