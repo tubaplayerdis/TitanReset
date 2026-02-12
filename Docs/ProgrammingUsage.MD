@@ -147,7 +147,7 @@ Here is an example movement in JerryIO:
 
 ![alt text](image-16.png)
 
-The coordinates of the point in the example movement are: `-22, -23, 315`
+The coordinates of the point in the example movement are: `-22, -23, 125`
 
 Heres what this would look like in code:
 
