@@ -8,5 +8,15 @@
     "supported_kernels": "^4.2.1",
     "target": "v5",
     "version": "0.0.1"
+  },
+  {
+    "metadata": {
+      "location": "https://github.com/tubaplayerdis/TitanReset/releases/download/v0.0.1/TitanReset@0.0.2.zip"
+    },
+    "name": "TitanReset",
+    "py/object": "pros.conductor.templates.base_template.BaseTemplate",
+    "supported_kernels": "^4.2.1",
+    "target": "v5",
+    "version": "0.0.2"
   }
 ]

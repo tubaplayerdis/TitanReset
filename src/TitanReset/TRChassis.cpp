@@ -406,11 +406,7 @@ void tr_chassis::perform_dsr_init(tr_quadrant quadrant, float heading)
     tr_vector3 pose = chassis->getPose();
     imu->set_heading(heading);
     chassis->setPose(tr_vector3(0,0,heading));
-    tr_conf_pair<tr_vector3> coords = get_position_calculation(quadrant, heading);
-
-    pose.x = coords.get_value().x;
-    pose.y = coords.get_value().y;
-    chassis->setPose(pose);
+    perform_dsr_quad(quadrant);
 }
 
 void tr_chassis::init_display()
