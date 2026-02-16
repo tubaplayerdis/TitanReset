@@ -23,6 +23,9 @@ After that, run the following commands in order to **install TitanReset**.
 > [!WARNING]
 > TitanReset uses two different versions for EZ-Template and LemLib. Use the right commands to install TitanReset otherwise it will not work.
 
+> [!NOTE]
+> **TitanReset for LemLib ONLY SUPPORTS PROS V2.4.1+** 
+
 #### LemLib Install Commands
 
 ```pros c add-depot TitanReset https://raw.githubusercontent.com/tubaplayerdis/TitanReset/refs/heads/main/depot.json```
