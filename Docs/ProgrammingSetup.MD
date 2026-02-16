@@ -27,13 +27,13 @@ After that, run the following commands in order to **install TitanReset**.
 
 ```pros c add-depot TitanReset https://raw.githubusercontent.com/tubaplayerdis/TitanReset/refs/heads/main/depot.json```
 
-```pros c apply TitanReset@0.0.2```
+```pros c apply TitanReset@0.0.3```
 
 #### EZ-Template Install Commands
 
 ```pros c add-depot TitanReset-EZ https://raw.githubusercontent.com/tubaplayerdis/TitanReset-EZ/refs/heads/main/depot.json```
 
-```pros c apply TitanReset-EZ@0.0.2```
+```pros c apply TitanReset-EZ@0.0.3```
 
 ## Programming Setup
 
