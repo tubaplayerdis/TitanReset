@@ -169,7 +169,7 @@ tr_quadrant tr_chassis::get_quadrant()
         return tr_quadrant::POS_POS;
     }
 
-    if (cur_pose.x > 0 && cur_pose.y < 0)
+    if (cur_pose.x < 0 && cur_pose.y > 0)
     {
         return tr_quadrant::NEG_POS;
     }
