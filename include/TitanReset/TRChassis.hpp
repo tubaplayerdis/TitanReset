@@ -79,10 +79,14 @@ public:
 
     /**
      * @brief Starts an odometry system and distance sensor system recording in a background task
+     * 
+     * @note appends to the files: odom_data.txt, dist_data.txt respectively
      *
-     * @param filename name of the file for the recording
+     * @param name name of the recording
+     * @param date date of the recording
+     * @param time time of the recording
      */
-    void start_location_recording(std::string date, std::string time);
+    void start_location_recording(std::string name, std::string date = __DATE__, std::string time = __TIME__);
 
     /**
      * @brief Stops the current odometry system recording

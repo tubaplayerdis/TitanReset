@@ -455,19 +455,19 @@ void tr_chassis::shutdown_display()
     pros::lcd::shutdown();
 }
 
-void tr_chassis::start_location_recording(std::string date, std::string time)
+void tr_chassis::start_location_recording(std::string name, std::string date, std::string time)
 {
     if (location_task != nullptr) location_task->suspend();
     delete location_task;
-    location_task = new pros::Task([this, time, date]() -> void
+    location_task = new pros::Task([this, name, time, date]() -> void
     {
         std::ofstream output("odom_data.txt", std::ios::app);
         std::ofstream output2("dist_data.txt", std::ios::app);
 
         double mil = pros::millis();
 
-        output << "\n" << "Timestamp: " << date << " " << time << " " << mil << "\n";
-        output2 << "\n" << "Timestamp: " << date << " " << time << " " << mil << "\n";
+        output << "\n" << name << date << " " << time << " " << mil << "\n";
+        output2 << "\n" << name << date << " " << time << " " << mil << "\n";
 
         while (true)
         {
