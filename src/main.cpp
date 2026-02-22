@@ -119,8 +119,9 @@ tr_sensor west({5.137, 3.744}, 13);
  * &imu - pointer to IMU
  * &chassis - pointer to LemLib chassis
  * {&north, &east, &south, &west} - Array of pointers to sensors.
+ * Using the metal field perimeter
  */
-tr_chassis dsr_system(&imu, &chassis, {&north, &east, &south, &west});
+tr_chassis dsr_system(&imu, &chassis, {&north, &east, &south, &west}, tr_fields::metal);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.

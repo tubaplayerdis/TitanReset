@@ -18,6 +18,15 @@ struct tr_options
 };
 
 /**
+ *  Standard field perimeter radii.
+ */
+namespace tr_fields
+{
+    constexpr float plastic = 70.205;
+    constexpr float metal = 70.336;
+}
+
+/**
  * TitanReset chassis object. Used to perform distance sensor resets
  */
 class tr_chassis
@@ -33,7 +42,7 @@ public:
      * @param base pointer to the lemlib chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors);
+    tr_chassis(pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic);
 
     /**
      * @brief Initialize the localization chassis
@@ -41,10 +50,10 @@ public:
      *
      * @param settings customizable trust and gain options for the localization algorithm
      * @param inertial pointer to the inertial sensor on the robot
-     * @param base pointer to the lemlib chassis of the robot
+     * @param base pointer to the drivebase chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(pros::Imu* inertial, tr_drivebase_generic* base, std::array<tr_sensor*,4> sensors);
+    tr_chassis(pros::Imu* inertial, tr_drivebase_generic* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic);
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot already knows where it is and where it is facing.
@@ -108,6 +117,11 @@ private:
     * Active sensors being used by the robot.
     */
     int active_sensors;
+
+    /**
+     * Active field radius.
+     */
+    const float wall_cord;
 
     void set_active_sensors(int sensors);
 

@@ -83,7 +83,7 @@ void tr_chassis::set_active_sensors(int sensors)
     active_sensors |= sensors;
 }
 
-tr_chassis::tr_chassis(pros::Imu *inertial, lemlib::Chassis* chas ,std::array<tr_sensor *,4> sensors) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr)
+tr_chassis::tr_chassis(pros::Imu *inertial, lemlib::Chassis* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
 {
     north = sensors.at(0);
     east = sensors.at(1);
@@ -93,7 +93,7 @@ tr_chassis::tr_chassis(pros::Imu *inertial, lemlib::Chassis* chas ,std::array<tr
     chassis = new tr_lem_base(chas);
 }
 
-tr_chassis::tr_chassis(pros::Imu *inertial, tr_drivebase_generic* chas ,std::array<tr_sensor *,4> sensors) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr)
+tr_chassis::tr_chassis(pros::Imu *inertial, tr_drivebase_generic* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
 {
     north = sensors.at(0);
     east = sensors.at(1);
@@ -214,8 +214,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case POS_POS:
             {
                 ret.set_confidence(conf_avg(e_dist, n_dist));
-                x = wall_coord - e_dist.get_value();
-                y = wall_coord - n_dist.get_value();
+                x = wall_cord - e_dist.get_value();
+                y = wall_cord - n_dist.get_value();
                 set_active_sensors(NORTH | EAST);
                 break;
             }
@@ -223,8 +223,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case NEG_POS:
             {
                 ret.set_confidence(conf_avg(n_dist, w_dist));
-                x = wall_coord - n_dist.get_value();
-                y = wall_coord - w_dist.get_value();
+                x = wall_cord - n_dist.get_value();
+                y = wall_cord - w_dist.get_value();
                 set_active_sensors(NORTH | WEST);
                 break;
             }
@@ -232,8 +232,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case NEG_NEG:
             {
                 ret.set_confidence(conf_avg(w_dist, s_dist));
-                x = wall_coord - w_dist.get_value();
-                y = wall_coord - s_dist.get_value();
+                x = wall_cord - w_dist.get_value();
+                y = wall_cord - s_dist.get_value();
                 set_active_sensors(WEST | SOUTH);
                 break;
             }
@@ -241,8 +241,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case POS_NEG:
             {
                 ret.set_confidence(conf_avg(s_dist, e_dist));
-                x = wall_coord - s_dist.get_value();
-                y = wall_coord - e_dist.get_value();
+                x = wall_cord - s_dist.get_value();
+                y = wall_cord - e_dist.get_value();
                 set_active_sensors(SOUTH | EAST);
                 break;
             }
@@ -254,8 +254,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case POS_POS:
             {
                 ret.set_confidence(conf_avg(n_dist, w_dist));
-                x = -wall_coord + w_dist.get_value();
-                y = wall_coord - n_dist.get_value();
+                x = -wall_cord + w_dist.get_value();
+                y = wall_cord - n_dist.get_value();
                 set_active_sensors(WEST | NORTH);
                 break;
             }
@@ -263,8 +263,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case NEG_POS:
             {
                 ret.set_confidence(conf_avg(s_dist, w_dist));
-                x = -wall_coord + s_dist.get_value();
-                y = wall_coord - w_dist.get_value();
+                x = -wall_cord + s_dist.get_value();
+                y = wall_cord - w_dist.get_value();
                 set_active_sensors(SOUTH | WEST);
                 break;
             }
@@ -272,8 +272,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case NEG_NEG:
             {
                 ret.set_confidence(conf_avg(e_dist, s_dist));
-                x = -wall_coord + e_dist.get_value();
-                y = wall_coord - s_dist.get_value();
+                x = -wall_cord + e_dist.get_value();
+                y = wall_cord - s_dist.get_value();
                 set_active_sensors(WEST | SOUTH);
                 break;
             }
@@ -281,8 +281,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case POS_NEG:
             {
                 ret.set_confidence(conf_avg(e_dist, n_dist));
-                x = -wall_coord + n_dist.get_value();
-                y = wall_coord - e_dist.get_value();
+                x = -wall_cord + n_dist.get_value();
+                y = wall_cord - e_dist.get_value();
                 set_active_sensors(NORTH | EAST);
                 break;
             }
@@ -294,8 +294,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case POS_POS:
             {
                 ret.set_confidence(conf_avg(w_dist, s_dist));
-                x = -wall_coord + w_dist.get_value();
-                y = -wall_coord + s_dist.get_value();
+                x = -wall_cord + w_dist.get_value();
+                y = -wall_cord + s_dist.get_value();
                 set_active_sensors(WEST | SOUTH);
                 break;
             }
@@ -303,8 +303,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case NEG_POS:
             {
                 ret.set_confidence(conf_avg(s_dist, e_dist));
-                x = -wall_coord + s_dist.get_value();
-                y = -wall_coord + e_dist.get_value();
+                x = -wall_cord + s_dist.get_value();
+                y = -wall_cord + e_dist.get_value();
                 set_active_sensors(SOUTH | EAST);
                 break;
             }
@@ -312,8 +312,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case NEG_NEG:
             {
                 ret.set_confidence(conf_avg(e_dist, n_dist));
-                x = -wall_coord + e_dist.get_value();
-                y = -wall_coord + n_dist.get_value();
+                x = -wall_cord + e_dist.get_value();
+                y = -wall_cord + n_dist.get_value();
                 set_active_sensors(EAST | NORTH);
                 break;
             }
@@ -321,8 +321,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case POS_NEG:
             {
                 ret.set_confidence(conf_avg(n_dist, w_dist));
-                x = -wall_coord + n_dist.get_value();
-                y = -wall_coord + w_dist.get_value();
+                x = -wall_cord + n_dist.get_value();
+                y = -wall_cord + w_dist.get_value();
                 set_active_sensors(NORTH | WEST);
                 break;
             }
@@ -334,8 +334,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case POS_POS:
             {
                 ret.set_confidence(conf_avg(e_dist, s_dist));
-                x = wall_coord - e_dist.get_value();
-                y = -wall_coord + s_dist.get_value();
+                x = wall_cord - e_dist.get_value();
+                y = -wall_cord + s_dist.get_value();
                 set_active_sensors(EAST | SOUTH);
                 break;
             }
@@ -343,8 +343,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case NEG_POS:
             {
                 ret.set_confidence(conf_avg(n_dist, e_dist));
-                x = wall_coord - n_dist.get_value();
-                y = -wall_coord + e_dist.get_value();
+                x = wall_cord - n_dist.get_value();
+                y = -wall_cord + e_dist.get_value();
                 set_active_sensors(NORTH | EAST);
                 break;
             }
@@ -352,8 +352,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case NEG_NEG:
             {
                 ret.set_confidence(conf_avg(w_dist, n_dist));
-                x = wall_coord - w_dist.get_value();
-                y = -wall_coord + n_dist.get_value();
+                x = wall_cord - w_dist.get_value();
+                y = -wall_cord + n_dist.get_value();
                 set_active_sensors(WEST | NORTH);
                 break;
             }
@@ -361,8 +361,8 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
             case POS_NEG:
             {
                 ret.set_confidence(conf_avg(s_dist, w_dist));
-                x = wall_coord - s_dist.get_value();
-                y = -wall_coord + w_dist.get_value();
+                x = wall_cord - s_dist.get_value();
+                y = -wall_cord + w_dist.get_value();
                 set_active_sensors(SOUTH | WEST);
                 break;
             }

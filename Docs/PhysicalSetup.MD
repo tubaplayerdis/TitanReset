@@ -22,7 +22,7 @@ Sensors need to be located on every side of the robot, with one sensor on every 
 
  - Unobstructed - The sensors line of sight cannot be obstructed by either the robot or game/field elements. This means that the sensor has to be high enough to not be interefered with by game elements and also not experience interference by robot mechanisms.
 
- - (Optional & Optimal) Works with metal fields - To have the sensors work with the metal fields, the sensors have to mounted in a way that causes them to hit the metal bar at the top of the field and not the polycarbonate walls.
+ - **(Optional & Optimal)** Works with metal fields - To have the sensors work with the metal fields, the sensors have to mounted in a way that causes them to hit the metal bar at the top of the field and not the clear polycarbonate walls. There is an low chance to get accurate readings off the clear polycarbonate walls
 
 ### Pictures and descriptions
 
@@ -134,20 +134,38 @@ Collect all of your offsets for each sensor. Write them down or store then somew
  - South `X: 4.861, Y: 5.25`
  - West `X: 5.137, Y: -3.744`
 
+## If Using The Legacy Metal Field Perimeter
+
+Due to the nature of the polycarbonate walls, you will want your sensors to **hit the metal element** of the Legacy Field Perimeter for **accurate readings**. The metal element is pictured below (highlighted):
+
+![alt text](image-20.png)
+
+#### Acceptable Sensor Mount Example - Legacy Field Perimeter
+
+This is optimal as it hits the metal element and will return accurate readings.
+
+![alt text](image-21.png)
+
+#### Unacceptable Sensor Mount Example - Legacy Field Perimeter
+
+Do not do this if you have a metal field! You will get inaccurate readings!
+
+![alt text](image-22.png)
+
 ## Physical Setup Complete!
 
 You just completed the hard part of TitanReset! Learn how to program your new sensors with TitanReset to improve your autons [here](ProgrammingSetup.MD)
 
-___
+__
 
 ### Pro tip - you can change the orientation of the V5 distance sensor module on the base
 
 Since the distance sensor module is seperate to the base and held in with 4 screws in the same pattern, the module itself can be rotated to fit in ways that might not of before seemed possible.
 
-![alt text](image-13.png)
-
 ##### Default sensor orientation
 
-![alt text](image-14.png)
+![alt text](image-13.png)
 
 ##### Modified sensor orientation
+
+![alt text](image-14.png)

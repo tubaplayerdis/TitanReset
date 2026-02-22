@@ -2,13 +2,10 @@
 
 ## TitanReset - LemLib/EZ-Template Setup
 
-This section goes over how to setup TitanReset with LemLib & EZ-Template specifically. This will not go over LemLib & EZ-Template setup and will assume that either is already setup for your robot.
+This section goes over how to setup TitanReset with LemLib specifically. This will not go over LemLib setup and will assume that either is already setup for your robot.
 
 **If you need help setting up LemLib**, I suggest the following resource:
  - [LemLib Setup (Website)](https://lemlib.readthedocs.io/en/stable/tutorials/1_getting_started.html)
-
-**If you need help setting up EZ-Template**, I suggest the following resource:
- - [EZ-Template Setup (Website)](https://ez-robotics.github.io/EZ-Template/tutorials/installation) 
 
 ## Installation
 
@@ -20,29 +17,20 @@ First, you should click the pros icon on the sidebar of Visual Studio Code and f
 
 After that, run the following commands in order to **install TitanReset**.
 
-> [!WARNING]
-> TitanReset uses two different versions for EZ-Template and LemLib. Use the right commands to install TitanReset otherwise it will not work.
-
 > [!NOTE]
-> **TitanReset for LemLib ONLY SUPPORTS PROS V2.4.1+** 
+> **TitanReset ONLY SUPPORTS PROS V2.4.1+** 
 
-#### LemLib Install Commands
+#### Install Commands
 
 ```pros c add-depot TitanReset https://raw.githubusercontent.com/tubaplayerdis/TitanReset/refs/heads/main/depot.json```
 
 ```pros c apply TitanReset@0.0.3```
 
-#### EZ-Template Install Commands
-
-```pros c add-depot TitanReset-EZ https://raw.githubusercontent.com/tubaplayerdis/TitanReset-EZ/refs/heads/main/depot.json```
-
-```pros c apply TitanReset-EZ@0.0.3```
-
 ## Programming Setup
 
 > [!NOTE]
 > You do not literally have to paste the all of the following code into `main.cpp`. This guide assume that you have your template objects defined in main.cpp,
-> **If your LemLib/EZ-Template objects are defined somewhere else, use the file that contains those definitions instead.**
+> **If your LemLib objects are defined somewhere else, use the file that contains those definitions instead.**
 
 ### Adding TitanReset to your file
 
@@ -136,10 +124,6 @@ tr_sensor west({5.137, 3.744}, 13);
 
 To make all the sensors work together, you have to setup a TitanReset chassis. Keep this in the same place as your `tr_sensor` objects.
 
-This looks slightly different for LemLib vs EZ-Template users, so both are included below
-
-#### Lemlib Usage
-
 Paste the following code into your `main.cpp` file to setup the TitanReset chassis:
 
 ```cpp
@@ -154,27 +138,40 @@ tr_chassis dsr_system(&imu, &chassis, {&north, &east, &south, &west});
 Notes:
  - If your imu object or lemlib chassis object are named something else, change the parameter names to match the name of the chassis or imu. (default called chassis & imu)
 
-#### EZ-Template Usage
+### Optional (But Highly Recommended) - Field Perimeter Differences
 
-Paste the following code into your `main.cpp` file to setup the TitanReset chassis:
+In V5RC, there are two different V5RC legal field perimeters
+
+ - Legacy Metal Field Perimeter
+ - V5 Plastic GPS Field Perimeter
+
+As with lots of things vex, theses perimeters have 2 different radiuses and these changes are also undocumented!
+
+To support this discrepancy, there is an optional parameter at the end of the tr_chassis which allows TitanReset to accomodate for the difference.
+
+This parameter defaults to the plastic field perimeter due to its higher relevance in V5RC competitions.
+
+#### Visualization of the difference
+
+##### V5 Plastic Field
+
+![alt text](image-19.png)
+
+##### Legacy Metal Field
+
+![alt text](image-18.png)
+
+When using **metal fields** it is highly recommended to append this to the end of the tr_chassis constructor to make TitanReset more accurate:
 
 ```cpp
 /**
  * TitanReset Chassis
- * &chassis.imu - pointer to IMU
- * &chassis - pointer to EZ-Template Drive
+ * &imu - pointer to IMU
+ * &chassis - pointer to LemLib chassis
  * {&north, &east, &south, &west} - Array of pointers to sensors.
+ * Using the metal field perimeter
  */
-tr_chassis dsr_system(&chassis.imu, &chassis, {&north, &east, &south, &west});
-```
-
-Notes:
- - If your EZ-Template drive object is named something else, change the parameter names to match the name of the drive (default called chassis)
-
-Paste the following code into your `subsystems.hpp` file to allow your autons to access the TitanReset chassis. **Paste this below** the `extern Drive chassis` code.
-
-```cpp
-extern tr_chassis dsr_system;
+tr_chassis dsr_system(&imu, &chassis, {&north, &east, &south, &west}, tr_fields::metal);
 ```
 
 ## Thats all for setup!

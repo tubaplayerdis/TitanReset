@@ -1,7 +1,7 @@
 #pragma once
 
 /*
-* Every constant used by TitanReset. Changing these values will highly unrecommended as it will cause major issues.
+* Every constant used by TitanReset. Values are compiled into TitanReset and changing will have no effect. They should only be used as refrence.
 */
 
 /**
@@ -23,11 +23,6 @@ static constexpr float deg_rad_conversion_factor = 0.0174532;
  * Radian to Degree conversion factor
  */
 static constexpr float rad_deg_conversion_factor = 57.2958;
-
-/**
- * Distance to vex wall from origin in inches
- */
-static constexpr float wall_coord = 70.208;
 
 /**
  * Domain of the confidence readings from the V5 Distance Sensor

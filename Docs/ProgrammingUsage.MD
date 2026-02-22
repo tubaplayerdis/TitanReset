@@ -4,7 +4,7 @@ This tutorial will go over the best practices and usage of TitanReset.
 
 ## Intoroduction - Coordinates, JerryIO, etc
 
-#### Notice - This assumes you are using coordinates to create autonomous routines as is standard pracice with LemLib and EZ-Template
+#### Notice - This assumes you are using coordinates to create autonomous routines as is standard pracice with LemLib
 
 #### TitanReset is a DSR implementation.
 
@@ -150,8 +150,6 @@ Here is an example movement in JerryIO:
 The coordinates of the point in the example movement are: `-22, -23, 125`
 
 Heres what this would look like in code:
-
-##### Example uses LemLib. This would look different in EZ-Template
 
 ```cpp
 void super_auton()
