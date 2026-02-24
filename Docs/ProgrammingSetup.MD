@@ -1,6 +1,6 @@
 # TitanReset - Programming Setup Tutorial
 
-## TitanReset - LemLib/EZ-Template Setup
+## TitanReset - Setup
 
 This section goes over how to setup TitanReset with LemLib specifically. This will not go over LemLib setup and will assume that either is already setup for your robot.
 
@@ -24,7 +24,7 @@ After that, run the following commands in order to **install TitanReset**.
 
 ```pros c add-depot TitanReset https://raw.githubusercontent.com/tubaplayerdis/TitanReset/refs/heads/main/depot.json```
 
-```pros c apply TitanReset@0.0.3```
+```pros c apply TitanReset@0.0.5```
 
 ## Programming Setup
 
