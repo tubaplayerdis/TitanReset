@@ -2,7 +2,7 @@
 
 ## TitanReset - Setup
 
-This section goes over how to setup TitanReset with LemLib specifically. This will not go over LemLib setup and will assume that either is already setup for your robot.
+This section goes over how to setup TitanReset specifically. This will not go over LemLib setup and will assume that either is already setup for your robot.
 
 **If you need help setting up LemLib**, I suggest the following resource:
  - [LemLib Setup (Website)](https://lemlib.readthedocs.io/en/stable/tutorials/1_getting_started.html)
