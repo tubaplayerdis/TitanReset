@@ -1,6 +1,16 @@
 [
   {
     "metadata": {
+      "location": "https://github.com/tubaplayerdis/TitanReset/releases/download/v0.0.5/TitanReset@0.0.5.zip"
+    },
+    "name": "TitanReset",
+    "py/object": "pros.conductor.templates.base_template.BaseTemplate",
+    "supported_kernels": "^4.2.1",
+    "target": "v5",
+    "version": "0.0.5"
+  },
+  {
+    "metadata": {
       "location": "https://github.com/tubaplayerdis/TitanReset/releases/download/v0.0.3/TitanReset@0.0.4.zip"
     },
     "name": "TitanReset",
