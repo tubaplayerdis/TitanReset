@@ -27,6 +27,40 @@ namespace tr_fields
 }
 
 /**
+ * @brief Implemented version of the generic drivebase class to enable support with lemlib.
+ */
+class tr_lem_base : public tr_drivebase_generic
+{
+    public:
+    lemlib::Chassis* chassis;
+
+    tr_lem_base(lemlib::Chassis* chassis_ptr) : chassis(chassis_ptr) {}
+
+    tr_vector3 getPose() override
+    {
+        tr_vector3 vec_ret;
+        lemlib::Pose current = chassis->getPose();
+
+        vec_ret.x = current.x;
+        vec_ret.y = current.y;
+        vec_ret.z = current.theta;
+
+        return vec_ret;
+    }
+
+    void setPose(tr_vector3 new_pose) override
+    {
+        lemlib::Pose set_pose(0,0,0);
+
+        set_pose.x = new_pose.x;
+        set_pose.y = new_pose.y;
+        set_pose.theta = new_pose.z;
+
+        chassis->setPose(set_pose);
+    }
+};
+
+/**
  * TitanReset chassis object. Used to perform distance sensor resets
  */
 class tr_chassis

@@ -5,40 +5,6 @@
 #include "../../include/lemlib/chassis/chassis.hpp"
 #include <fstream>
 
-/**
- * @brief Implemented version of the generic drivebase class to enable support with lemlib.
- */
-class tr_lem_base : public tr_drivebase_generic
-{
-    public:
-    lemlib::Chassis* chassis;
-
-    tr_lem_base(lemlib::Chassis* chassis_ptr) : chassis(chassis_ptr) {}
-
-    tr_vector3 getPose() override
-    {
-        tr_vector3 vec_ret;
-        lemlib::Pose current = chassis->getPose();
-
-        vec_ret.x = current.x;
-        vec_ret.y = current.y;
-        vec_ret.z = current.theta;
-
-        return vec_ret;
-    }
-
-    void setPose(tr_vector3 new_pose) override
-    {
-        lemlib::Pose set_pose(0,0,0);
-
-        set_pose.x = new_pose.x;
-        set_pose.y = new_pose.y;
-        set_pose.theta = new_pose.z;
-
-        chassis->setPose(set_pose);
-    }
-};
-
 static const tr_options default_options = {};
 
 float tr_chassis::quadrant_recursive(float heading)
@@ -274,7 +240,7 @@ tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadra
                 ret.set_confidence(conf_avg(e_dist, s_dist));
                 x = -wall_cord + e_dist.get_value();
                 y = wall_cord - s_dist.get_value();
-                set_active_sensors(WEST | SOUTH);
+                set_active_sensors(EAST | SOUTH);
                 break;
             }
 
@@ -461,20 +427,16 @@ void tr_chassis::start_location_recording(std::string name, std::string date, st
     delete location_task;
     location_task = new pros::Task([this, name, time, date]() -> void
     {
-        std::ofstream output("odom_data.txt", std::ios::app);
-        std::ofstream output2("dist_data.txt", std::ios::app);
+        std::stringstream name_stream;
 
-        double mil = pros::millis();
+        name_stream << name << " " << date << " " << time;
 
-        output << "\n" << name << date << " " << time << " " << mil << "\n";
-        output2 << "\n" << name << date << " " << time << " " << mil << "\n";
+        std::ofstream output(name_stream.str());
 
         while (true)
         {
             tr_vector3 pose = chassis->getPose();
-            tr_vector3 pose1 = get_position_calculation(get_quadrant()).get_value();
             output << pose.x << ", " << pose.y << ", " << pose.z << "\n";
-            output2 << pose1.x << ", " << pose1.y << ", " << pose1.z << "\n";
             pros::Task::delay(50);
         }
         output.close();
