@@ -2,7 +2,6 @@
 #include "../../include/TitanReset/TRConstants.hpp"
 #include "../../include/pros/imu.hpp"
 #include "../../include/pros/llemu.hpp"
-#include "../../include/lemlib/chassis/chassis.hpp"
 #include <fstream>
 
 static const tr_options default_options = {};
@@ -49,17 +48,7 @@ void tr_chassis::set_active_sensors(int sensors)
     active_sensors |= sensors;
 }
 
-tr_chassis::tr_chassis(pros::Imu *inertial, lemlib::Chassis* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
-{
-    north = sensors.at(0);
-    east = sensors.at(1);
-    south = sensors.at(2);
-    west = sensors.at(3);
-    imu = inertial;
-    chassis = new tr_lem_base(chas);
-}
-
-tr_chassis::tr_chassis(pros::Imu *inertial, tr_drivebase_generic* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
+tr_chassis::tr_chassis(pros::Imu *inertial, tr_drivebase_abstract* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
 {
     north = sensors.at(0);
     east = sensors.at(1);
@@ -389,20 +378,12 @@ void tr_chassis::update_display(tr_chassis* chassis)
 
     float heading = quadrant_recursive(chassis->imu->get_heading());
 
-    float confidence_n = chassis->north->distance(heading).get_confidence();
-    float confidence_e = chassis->east->distance(heading).get_confidence();
-    float confidence_s = chassis->south->distance(heading).get_confidence();
-    float confidence_w = chassis->west->distance(heading).get_confidence();
-
     float dis_n = chassis->north->distance(heading).get_value();
     float dis_e = chassis->east->distance(heading).get_value();
     float dis_s = chassis->south->distance(heading).get_value();
     float dis_w = chassis->west->distance(heading).get_value();
     
-
-    bool use_pose = true;
-    chassis->perform_dsr();
-    tr_conf_pair<tr_vector3> position = chassis->get_position_calculation(tr_quadrant::NEG_POS);
+    tr_conf_pair<tr_vector3> position = chassis->get_position_calculation(chassis->get_quadrant());
     std::string quads = chassis->get_quadrant_string(chassis->get_quadrant());
     std::string squad = chassis->get_quadrant_string(chassis->sensor_relevancy());
 
@@ -411,9 +392,8 @@ void tr_chassis::update_display(tr_chassis* chassis)
     pros::lcd::print(0, "SQ: %s, %s", quads.c_str(), squad.c_str());
     pros::lcd::print(1, "SU: N %i, E %i, S %i, W %i", north, east, south, west);
     pros::lcd::print(2, "SR: N %.2f, E %.2f, S %.2f, W %.2f", dis_n, dis_e, dis_s, dis_w);
-    pros::lcd::print(3, "SC: N %.2f, E %.2f, S %.2f, W %.2f", confidence_n, confidence_e, confidence_s, confidence_w);
     pros::lcd::print(4, "PS: X: %.2f,Y: %.2f,H: %.2f,C: %.2f", position.get_value().x, position.get_value().y, heading, position.get_confidence());
-    pros::lcd::print(5, "LC: X: %.2f,Y: %.2f,H: %.2f,S: %i", pose_lem.x, pose_lem.y, pose_lem.z, use_pose);
+    pros::lcd::print(5, "LC: X: %.2f,Y: %.2f,H: %.2f", pose_lem.x, pose_lem.y, pose_lem.z);
 }
 
 void tr_chassis::shutdown_display()
@@ -429,7 +409,7 @@ void tr_chassis::start_location_recording(std::string name, std::string date, st
     {
         std::stringstream name_stream;
 
-        name_stream << name << " " << date << " " << time;
+        name_stream << name << "_" << date << "_" << time;
 
         std::ofstream output(name_stream.str());
 
@@ -439,6 +419,7 @@ void tr_chassis::start_location_recording(std::string name, std::string date, st
             output << pose.x << ", " << pose.y << ", " << pose.z << "\n";
             pros::Task::delay(50);
         }
+
         output.close();
     });
 }

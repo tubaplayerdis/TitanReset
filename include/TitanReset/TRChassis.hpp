@@ -27,9 +27,13 @@ namespace tr_fields
 }
 
 /**
- * @brief Implemented version of the generic drivebase class to enable support with lemlib.
+ * @brief Implemented version of the abstract drivebase class to enable support with lemlib.
+ * 
+ * This is an explample of what an implementation of any template could look like. Use this as a base if creating an impelementation for another template.
+ * 
+ * @note This class is implemented in the header file to be commented out if taking a template nuetral approach.
  */
-class tr_lem_base : public tr_drivebase_generic
+class tr_lem_base : public tr_drivebase_abstract
 {
     public:
     lemlib::Chassis* chassis;
@@ -72,20 +76,22 @@ public:
      * @note ONLY INITIALIZE THIS WHEN YOUR ROBOT IS NOT MOVING!
      *
      * @param inertial pointer to the inertial sensor on the robot
-     * @param base pointer to the lemlib chassis of the robot
+     * @param base pointer to the drivebase chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic);
+    tr_chassis(pros::Imu* inertial, tr_drivebase_abstract* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic);
 
     /**
      * @brief Initialize the localization chassis
      * @note ONLY INITIALIZE THIS WHEN YOUR ROBOT IS NOT MOVING!
+     * 
+     * @details If using TitanReset template nuetral, this constructor can be used as a starting place for how to initalize the TitanReset chassis using a template nuetral option. This is why it is also implemented in the header file as it allows it to be removed when going template nuetral.
      *
      * @param inertial pointer to the inertial sensor on the robot
-     * @param base pointer to the drivebase chassis of the robot
+     * @param base pointer to the lemlib chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(pros::Imu* inertial, tr_drivebase_generic* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic);
+    tr_chassis(pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic) : tr_chassis(inertial, new tr_lem_base(base), sensors, field_radius) {}
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot already knows where it is and where it is facing.
@@ -260,7 +266,7 @@ private:
     /** 
      * Drivebase reference
      */
-    tr_drivebase_generic* chassis;
+    tr_drivebase_abstract* chassis;
 
     /**
      * Provided options
