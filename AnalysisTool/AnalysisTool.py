@@ -22,12 +22,12 @@ else:
 
 FIELD_IN = 144  # VEX field size in inches
 
-plt.figure(figsize=(6, 6))
+fig = plt.figure(figsize=(6, 6))
 
 # Draw field
 plt.imshow(
     field_img,
-    extent=[-FIELD_IN/13.8, FIELD_IN/13.8, -FIELD_IN/13.8, FIELD_IN/13.8]
+    extent=[-FIELD_IN/2, FIELD_IN/2, -FIELD_IN/2, FIELD_IN/2]
 )
 
 # Plot path
@@ -49,5 +49,5 @@ plt.quiver(
 plt.axis("equal")
 plt.xlabel("X (in)")
 plt.ylabel("Y (in)")
-plt.title("TitanReset debug data")
+plt.title("TitanReset Analysis Tool - 38535A")
 plt.show()
