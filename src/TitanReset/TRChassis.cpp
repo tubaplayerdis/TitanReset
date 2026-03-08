@@ -403,20 +403,28 @@ void tr_chassis::shutdown_display()
 
 void tr_chassis::start_location_recording(std::string name, std::string date, std::string time)
 {
-    if (location_task != nullptr) location_task->suspend();
+    if (location_task != nullptr) location_task->remove();
     delete location_task;
     location_task = new pros::Task([this, name, time, date]() -> void
     {
-        std::stringstream name_stream;
+        // 1. Sanitize the strings (Replace ' ' and ':' with '-')
+        // This handles the "Mar  7 2026" and "17:36:11" formats
+        std::string clean_date = date;
+        std::string clean_time = time;
+        std::string clean_ms = std::to_string(pros::millis());
 
-        name_stream << name << "_" << date << "_" << time;
+        for (char &c : clean_date) if (c == ' ') c = '-';
+        for (char &c : clean_time) if (c == ':') c = '-';
 
-        std::ofstream output(name_stream.str());
+        std::string name_comp = name + "_" + clean_date + "_" + clean_time + "_" + clean_ms + ".txt";
+
+        std::ofstream output(name_comp);
 
         while (true)
         {
             tr_vector3 pose = chassis->getPose();
             output << pose.x << ", " << pose.y << ", " << pose.z << "\n";
+            output.flush();
             pros::Task::delay(50);
         }
 
