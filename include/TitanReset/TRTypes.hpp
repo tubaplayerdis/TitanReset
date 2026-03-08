@@ -190,16 +190,17 @@ struct tr_vector2
 class tr_drivebase_abstract
 {
 public:
+    virtual ~tr_drivebase_abstract() = default;
 
     /**
      * @return struct of type tr_vector3 (TitanReset proprietary vector structure) representing the "pose" of the robot in X, Y, Theta (in degrees).
-     * @note pure virtual function as to be impelemetned in a subclass appropriately.
+     * @note pure virtual function as to be implemetned in a subclass appropriately.
      */
     virtual tr_vector3 getPose() = 0;
 
     /**
      * @brief set the "pose" of the drivebase using a struct of type tr_vector3 (TitanReset proprietary vector structure) representing the "pose" of the robot in X, Y, Theta (in degrees).
-     * @note pure virtual function as to be impelemetned in a subclass appropriately.
+     * @note pure virtual function as to be implemetned in a subclass appropriately.
      */
     virtual void setPose(tr_vector3 new_pose) = 0;
 };
