@@ -1,6 +1,5 @@
 #include "../../include/TitanReset/TRChassis.hpp"
 #include "../../include/TitanReset/TRConstants.hpp"
-#include "../../include/pros/imu.hpp"
 #include "../../include/pros/llemu.hpp"
 #include <fstream>
 
@@ -48,13 +47,12 @@ void tr_chassis::set_active_sensors(int sensors)
     active_sensors |= sensors;
 }
 
-tr_chassis::tr_chassis(pros::Imu *inertial, tr_drivebase_abstract* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
+tr_chassis::tr_chassis(tr_drivebase_abstract* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
 {
     north = sensors.at(0);
     east = sensors.at(1);
     south = sensors.at(2);
     west = sensors.at(3);
-    imu = inertial;
     chassis = chas;
 }
 
@@ -141,6 +139,7 @@ tr_quadrant tr_chassis::get_quadrant()
 
     return tr_quadrant::POS_POS;
 }
+
 //n_p, n_p
 tr_conf_pair<tr_vector3> tr_chassis::get_position_calculation(tr_quadrant quadrant)
 {
@@ -359,7 +358,6 @@ void tr_chassis::perform_dsr_quad(tr_quadrant quadrant)
 void tr_chassis::perform_dsr_init(tr_quadrant quadrant, float heading)
 {
     tr_vector3 pose = chassis->getPose();
-    imu->set_heading(heading);
     chassis->setPose(tr_vector3(0,0,heading));
     perform_dsr_quad(quadrant);
 }
