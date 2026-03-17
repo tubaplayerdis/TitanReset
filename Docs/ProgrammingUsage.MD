@@ -131,7 +131,7 @@ void super_auton()
 
     cross_parking_zone();
 
-    // Perform DSR after a odom movement that could cause major drift.
+    // Perform DSR after a odom movement that could cause major drift. Telll the program which quadrant the robot should be in
     dsr.system.perform_dsr_quad(tr_quadrant::NEG_POS)
 }
 ```
