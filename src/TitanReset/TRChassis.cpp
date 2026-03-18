@@ -3,8 +3,6 @@
 #include "../../include/pros/llemu.hpp"
 #include <fstream>
 
-static const tr_options default_options = {};
-
 float tr_chassis::quadrant_recursive(float heading)
 {
     if (heading < 0.0f)
@@ -22,7 +20,7 @@ float tr_chassis::quadrant_recursive(float heading)
 
 bool tr_chassis::can_position_exist(tr_vector3 pose)
 {
-    return true;
+    return (pose.x > -70.00 && pose.x < 70.00) && (pose.y > -70.00 && pose.y < 70.00);
 }
 
 std::string tr_chassis::get_quadrant_string(tr_quadrant quadr)
@@ -47,7 +45,7 @@ void tr_chassis::set_active_sensors(int sensors)
     active_sensors |= sensors;
 }
 
-tr_chassis::tr_chassis(tr_drivebase_abstract* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : options(default_options), active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
+tr_chassis::tr_chassis(tr_drivebase_abstract* chas ,std::array<tr_sensor *,4> sensors, const float field_radius) : active_sensors(0), b_display(false), location_task(nullptr), wall_cord(field_radius)
 {
     north = sensors.at(0);
     east = sensors.at(1);
@@ -340,26 +338,34 @@ float tr_chassis::conf_avg(tr_distance one, tr_distance two)
     return (one.get_confidence() + two.get_confidence()) / 2.0f;
 }
 
-void tr_chassis::perform_dsr()
+bool tr_chassis::perform_dsr()
 {
-    perform_dsr_quad(get_quadrant());
+    return perform_dsr_quad(get_quadrant());
 }
 
-void tr_chassis::perform_dsr_quad(tr_quadrant quadrant)
+bool tr_chassis::perform_dsr_quad(tr_quadrant quadrant)
 {
     tr_vector3 pose = chassis->getPose();
     tr_conf_pair<tr_vector3> coords = get_position_calculation(quadrant);
 
     pose.x = coords.get_value().x;
     pose.y = coords.get_value().y;
+
+    if(coords.get_confidence() == 0)
+    {
+        return false;
+    }
+
     chassis->setPose(pose);
+
+    return true;
 }
 
-void tr_chassis::perform_dsr_init(tr_quadrant quadrant, float heading)
+bool tr_chassis::perform_dsr_init(tr_quadrant quadrant, float heading)
 {
     tr_vector3 pose = chassis->getPose();
     chassis->setPose(tr_vector3(0,0,heading));
-    perform_dsr_quad(quadrant);
+    return perform_dsr_quad(quadrant);
 }
 
 void tr_chassis::init_display()

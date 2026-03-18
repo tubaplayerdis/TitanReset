@@ -5,19 +5,6 @@
 #include "../lemlib/chassis/chassis.hpp"
 
 /**
- * Options used by TitanReset when initializing the TitanReset chassis.
- * 
- * @note Subject to change as more modifiable options are added.
- */
-struct tr_options
-{
-    /**
-     * Sensor trust threshold on whether to use dsr if called. 0 is least trust and 1 is full trust.
-     */
-    const float sensor_trust = 1.0;
-};
-
-/**
  *  Standard field perimeter radii.
  */
 namespace tr_fields
@@ -95,8 +82,10 @@ public:
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot already knows where it is and where it is facing.
+     * 
+     * @return Whether the reset was sucsessfull given the coordinates calculated were in the functional bounds of the field.
      */
-    void perform_dsr();
+    bool perform_dsr();
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot does not know which quadrant it is in.
@@ -104,8 +93,10 @@ public:
      * @note Use this function after a movement that performs an action such as driving over a parking zone which crosses quadrants.
      *
      * @param quad The quadrant the robot is currently in
+     * 
+     * @return Whether the reset was sucsessfull given the coordinates calculated were in the functional bounds of the field.
      */
-    void perform_dsr_quad(tr_quadrant quadrant);
+    bool perform_dsr_quad(tr_quadrant quadrant);
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot does not know where it is and the sensors are fully trusted.
@@ -115,8 +106,10 @@ public:
      *
      * @param quadrant The quadrant the robot is currently in
      * @param heading The heading of the robot
+     * 
+     * @return Whether the reset was sucsessfull given the coordinates calculated were in the functional bounds of the field.
      */
-    void perform_dsr_init(tr_quadrant quadrant, float heading);
+    bool perform_dsr_init(tr_quadrant quadrant, float heading);
 
     /**
      * @breif Gets the robots quadrant based on its coordinates
@@ -161,6 +154,9 @@ private:
      */
     const float wall_cord;
 
+    /**
+     * Sets the active sensors when using debug gui
+     */
     void set_active_sensors(int sensors);
 
 public:
@@ -173,8 +169,7 @@ public:
     static float quadrant_recursive(float heading);
 
     /**
-     * @warning THIS IS NOT IMPLEMENTED AS OF CURRENT. WILL ALWYAS RETURN TRUE.
-     * @brief Compares the location against locations the robot physically cannot exist at such as inside the match loader or out of bounds based on the robots current position and size.
+     * @brief Compares the location against locations the robot physically cannot exist at such as out of bounds.
      *
      * @param pose current location vector
      * @returns whether the location can physically exist.
@@ -267,9 +262,4 @@ private:
      * Drivebase reference
      */
     tr_drivebase_abstract* chassis;
-
-    /**
-     * Provided options
-     */
-    tr_options options;
 };

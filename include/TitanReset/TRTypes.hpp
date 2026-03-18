@@ -204,3 +204,4 @@ public:
      */
     virtual void setPose(tr_vector3 new_pose) = 0;
 };
+
