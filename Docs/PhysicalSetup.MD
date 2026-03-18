@@ -119,6 +119,20 @@ The offsets for this sensor would be `X: -1.139, Y: 5.25`.
 
 The X (parrallel) offset of this sensor would be negative since it is past the origin in the opposite direction of what it is facing.
 
+### Clarification of offsets
+
+ - X (parrallel) offsets are relative to the sensor
+ - Y (perpendicular) offset are abosulte to the chassis.
+
+#### Perpendicular offset guide
+
+ - left -> negative
+ - right -> positive
+ - back -> negative
+ - front -> positive
+
+This is consistent with **LemLib's** offsets for odometry wheels.
+
 ### Collect all of your offsets
 
 Collect all of your offsets for each sensor. Write them down or store then somewhere you can access later.
