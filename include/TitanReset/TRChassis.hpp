@@ -79,7 +79,7 @@ public:
      * @param base pointer to the drivebase chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(pros::Imu* inertial, tr_drivebase_abstract* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic);
+    tr_chassis(tr_drivebase_abstract* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic);
 
     /**
      * @brief Initialize the localization chassis
@@ -91,7 +91,7 @@ public:
      * @param base pointer to the lemlib chassis of the robot
      * @param sensors array of pointers to the localization sensors of the robot
      */
-    tr_chassis(pros::Imu* inertial, lemlib::Chassis* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic) : tr_chassis(inertial, new tr_lem_base(base), sensors, field_radius) {}
+    tr_chassis(lemlib::Chassis* base, std::array<tr_sensor*,4> sensors, const float field_radius = tr_fields::plastic) : tr_chassis(new tr_lem_base(base), sensors, field_radius) {}
 
     /**
      * @brief Performs a distance sensor reset using the sensors on the robot given the robot already knows where it is and where it is facing.
