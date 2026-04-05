@@ -40,7 +40,7 @@ tr_conf_pair<float> tr_sensor::distance(float heading)
 
     float actual_reading = cos(heading_err_rad) * reading;
     float parallel_offset = cos(heading_err_rad) * offset.x;
-    float perpendicular_offset = sin(heading_err_rad) * offset.y;
+    float perpendicular_offset = sin(heading_err_rad) * offset.y * -1;
 
-    return tr_conf_pair<float>(actual_reading + parallel_offset - perpendicular_offset, sensor_confidence);
+    return tr_conf_pair<float>(actual_reading + parallel_offset + perpendicular_offset, sensor_confidence);
 }
