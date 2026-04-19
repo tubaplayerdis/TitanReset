@@ -424,6 +424,8 @@ void tr_chassis::start_location_recording(std::string name, std::string date, st
 
         std::ofstream output(name_comp);
 
+        if(!output.is_open()) return;
+
         while (true)
         {
             tr_vector3 pose = chassis->getPose();
