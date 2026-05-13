@@ -150,21 +150,16 @@ Collect all of your offsets for each sensor. Write them down or store then somew
 
 ## If Using The Legacy Metal Field Perimeter
 
-Due to the nature of the polycarbonate walls, you will want your sensors to **hit the metal element** of the Legacy Field Perimeter for **accurate readings**. The metal element is pictured below (highlighted):
+Contrary to popular belief, The metal field perimeter can actually be used with DSR against the polycarbonate walls but with some very important caveats:
 
-![alt text](image-20.png)
-
-#### Acceptable Sensor Mount Example - Legacy Field Perimeter
-
-This is optimal as it hits the metal element and will return accurate readings.
-
-![alt text](image-21.png)
-
-#### Unacceptable Sensor Mount Example - Legacy Field Perimeter
-
-Do not do this if you have a metal field! You will get inaccurate readings!
+ - The sensor must be relatively square to the field ~10 deg tolerance
+ - The sensor must be relatively close to the field < 40 inches
+ - If the wall plastic is new, there is a decent change a more opaque object behind it will be read by the sensor
+ - If there is suboptimal lighting, the sensor reading will be inconsistent
 
 ![alt text](image-22.png)
+
+#### This will work in practice, but with the caveats listed above
 
 ## Physical Setup Complete!
 
