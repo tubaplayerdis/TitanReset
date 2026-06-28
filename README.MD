@@ -8,9 +8,9 @@
 [Programming (Seutp)](Docs/ProgrammingSetup.MD)  
 [Programming (Usage)](Docs/ProgrammingUsage.MD)  
 
-## Docs (COMING SOON)
+## Video Tutorial
 
-[Docs]()
+[Vid](https://youtu.be/HbFzbHqmPrU?si=nzL5WAzSJwRc7Onc)
 
 ## Overview
 
